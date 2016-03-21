@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by juan on 14/10/15.
  */
-public class SocialmusicRootAPI {
+public class Music4youRootAPI {
     @InjectLinks({
             @InjectLink(resource = Music4youRootAPIResource.class, style = InjectLink.Style.ABSOLUTE, rel = "self bookmark home", title = "Beeter Root API"),
             @InjectLink(resource = PlaylistResource.class, style = InjectLink.Style.ABSOLUTE, rel = "current-stings", title = "Current stings", type= Music4youMediaType.SOCIALMUSIC_POST_COLLECTION),

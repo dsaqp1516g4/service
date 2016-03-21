@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * Created by juan on 28/09/15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SocialmusicError {
+public class Music4youError {
     private int status;
     private String reason;
 
-    public SocialmusicError() {
+    public Music4youError() {
     }
 
-    public SocialmusicError(int status, String reason) {
+    public Music4youError(int status, String reason) {
         this.status = status;
         this.reason = reason;
     }
