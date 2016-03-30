@@ -22,7 +22,7 @@ public class UserResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(Music4youMediaType.BEETER_AUTH_TOKEN)
+    @Produces(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN)
     public Response registerUser(@FormParam("loginid") String loginid, @FormParam("password")
     String password, @FormParam("email") String email, @FormParam("fullname") String fullname, @Context UriInfo uriInfo)
             throws URISyntaxException {
@@ -40,12 +40,12 @@ public class UserResource {
             throw new InternalServerErrorException();
         }
         URI uri = new URI(uriInfo.getAbsolutePath().toString() + "/" + user.getId());
-        return Response.created(uri).type(Music4youMediaType.BEETER_AUTH_TOKEN).entity(authenticationToken).build();
+        return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN).entity(authenticationToken).build();
     }
 
     @Path("/{id}")
     @GET
-    @Produces(Music4youMediaType.SOCIALMUSIC_USER)
+    @Produces(Music4youMediaType.MUSIC4YOU_USER)
     public User getUser(@PathParam("id") String id) {
         User user = null;
         try {
@@ -62,8 +62,8 @@ public class UserResource {
     private SecurityContext securityContext;
     @Path("/{id}")
     @PUT
-    @Consumes(Music4youMediaType.SOCIALMUSIC_USER)
-    @Produces(Music4youMediaType.SOCIALMUSIC_USER)
+    @Consumes(Music4youMediaType.MUSIC4YOU_USER)
+    @Produces(Music4youMediaType.MUSIC4YOU_USER)
     public User updateUser(@PathParam("id") String id, User user) {
         if(user == null)
             throw new BadRequestException("entity is null");

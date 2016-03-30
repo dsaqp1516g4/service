@@ -9,11 +9,11 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
  */
 public class Music4youResourceConfig extends ResourceConfig {
     public Music4youResourceConfig() {
-        packages("edu.upc.eetac.dsa.socialmusic");
-        packages("edu.upc.eetac.dsa.socialmusic.auth");
+        packages("edu.upc.eetac.dsa.music4you");
+        packages("edu.upc.eetac.dsa.music4you.auth");
         register(RolesAllowedDynamicFeature.class);
         register(DeclarativeLinkingFeature.class);
-        packages("edu.upc.eetac.dsa.socialmusic.cors");
+        packages("edu.upc.eetac.dsa.music4you.cors");
     }
 }
 

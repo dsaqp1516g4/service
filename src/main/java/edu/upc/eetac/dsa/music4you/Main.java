@@ -23,8 +23,8 @@ public class Main {
      */
     /* public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
-        // in edu.upc.eetac.dsa.socialmusic package
-        final ResourceConfig rc = new ResourceConfig().packages("edu.upc.eetac.dsa.socialmusic");
+        // in edu.upc.eetac.dsa.music4you package
+        final ResourceConfig rc = new ResourceConfig().packages("edu.upc.eetac.dsa.music4you");
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
@@ -32,7 +32,7 @@ public class Main {
     } */
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
-        // in edu.upc.eetac.dsa.socialmusic package
+        // in edu.upc.eetac.dsa.music4you package
         final ResourceConfig rc = new Music4youResourceConfig();
 
         // create and start a new instance of grizzly http server
@@ -41,8 +41,8 @@ public class Main {
     }
     public final static String getBaseURI() {
         if (baseURI == null) {
-            PropertyResourceBundle prb = (PropertyResourceBundle) ResourceBundle.getBundle("socialmusic");
-            baseURI = prb.getString("beeter.context");
+            PropertyResourceBundle prb = (PropertyResourceBundle) ResourceBundle.getBundle("music4you");
+            baseURI = prb.getString("music4you.context");
         }
         return baseURI;
     }

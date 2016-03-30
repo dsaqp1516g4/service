@@ -1,6 +1,6 @@
 package edu.upc.eetac.dsa.music4you;
 
-import edu.upc.eetac.dsa.music4you.entity.SocialmusicRootAPI;
+import edu.upc.eetac.dsa.music4you.entity.Music4youRootAPI;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,13 +19,13 @@ public class Music4youRootAPIResource {
     private String userid;
 
     @GET
-    @Produces(Music4youMediaType.BEETER_ROOT)
-    public SocialmusicRootAPI getRootAPI() {
+    @Produces(Music4youMediaType.MUSIC4YOU_ROOT)
+    public Music4youRootAPI getRootAPI() {
         if(securityContext.getUserPrincipal()!=null)
             userid = securityContext.getUserPrincipal().getName();
-        SocialmusicRootAPI socialmusicRootAPI = new SocialmusicRootAPI();
+        Music4youRootAPI music4youRootAPI = new Music4youRootAPI();
 
-        return socialmusicRootAPI;
+        return music4youRootAPI;
     }
 
     public String getUserid() {

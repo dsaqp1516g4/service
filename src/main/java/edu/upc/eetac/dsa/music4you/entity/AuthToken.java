@@ -2,7 +2,6 @@ package edu.upc.eetac.dsa.music4you.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.upc.eetac.dsa.music4you.*;
-import edu.upc.eetac.dsa.socialmusic.*;
 import org.glassfish.jersey.linking.Binding;
 import org.glassfish.jersey.linking.InjectLink;
 import org.glassfish.jersey.linking.InjectLinks;
@@ -17,11 +16,11 @@ import java.util.List;
 public class AuthToken {
     @InjectLinks({
             @InjectLink(resource = Music4youRootAPIResource.class, style = InjectLink.Style.ABSOLUTE, rel = "home", title = "Beeter Root API"),
-            @InjectLink(resource = LoginResource.class, style = InjectLink.Style.ABSOLUTE, rel = "self login", title = "Login", type= Music4youMediaType.BEETER_AUTH_TOKEN),
-            @InjectLink(resource = PlaylistResource.class, style = InjectLink.Style.ABSOLUTE, rel = "current-stings", title = "Current stings", type= Music4youMediaType.SOCIALMUSIC_POST_COLLECTION),
+            @InjectLink(resource = LoginResource.class, style = InjectLink.Style.ABSOLUTE, rel = "self login", title = "Login", type= Music4youMediaType.MUSIC4YOU_AUTH_TOKEN),
+            @InjectLink(resource = PlaylistResource.class, style = InjectLink.Style.ABSOLUTE, rel = "current-stings", title = "Current stings", type= Music4youMediaType.MUSIC4YOU_PLAYLIST_COLLECTION),
             @InjectLink(resource = LoginResource.class, style = InjectLink.Style.ABSOLUTE, rel = "logout", title = "Logout"),
-            @InjectLink(resource = PlaylistResource.class, style = InjectLink.Style.ABSOLUTE, rel = "create-sting", title = "Create sting", type= Music4youMediaType.SOCIALMUSIC_POST),
-            @InjectLink(resource = UserResource.class, method = "getUser", style = InjectLink.Style.ABSOLUTE, rel = "user-profile", title = "User profile", type= Music4youMediaType.SOCIALMUSIC_USER, bindings = @Binding(name = "id", value = "${instance.userid}"))
+            @InjectLink(resource = PlaylistResource.class, style = InjectLink.Style.ABSOLUTE, rel = "create-sting", title = "Create sting", type= Music4youMediaType.MUSIC4YOU_PLAYLIST),
+            @InjectLink(resource = UserResource.class, method = "getUser", style = InjectLink.Style.ABSOLUTE, rel = "user-profile", title = "User profile", type= Music4youMediaType.MUSIC4YOU_USER, bindings = @Binding(name = "id", value = "${instance.userid}"))
     })
     private List<Link> links;
 

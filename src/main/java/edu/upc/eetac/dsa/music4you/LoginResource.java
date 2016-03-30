@@ -23,7 +23,7 @@ public class LoginResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(Music4youMediaType.BEETER_AUTH_TOKEN)
+    @Produces(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN)
     public AuthToken login(@FormParam("login") String loginid, @FormParam("password") String password) {
         if(loginid == null || password == null)
             throw new BadRequestException("all parameters are mandatory");
