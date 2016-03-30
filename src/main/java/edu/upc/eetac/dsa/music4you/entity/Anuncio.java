@@ -1,7 +1,6 @@
 package edu.upc.eetac.dsa.music4you.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.glassfish.jersey.linking.InjectLink;
 import org.glassfish.jersey.linking.InjectLinks;
 
 import javax.ws.rs.core.Link;
@@ -21,7 +20,7 @@ public class Anuncio {
     private String subject;//titulo de anuncio
     private String description;
     private String image;
-    private String precio;
+    private long precio;
     private int type;
     private long creationTimestamp;
     private long lastModified;
@@ -82,11 +81,11 @@ public class Anuncio {
         this.image = image;
     }
 
-    public String getPrecio() {
+    public long getPrecio() {
         return precio;
     }
 
-    public void setPrecio(String precio) {
+    public void setPrecio(long precio) {
         this.precio = precio;
     }
 
