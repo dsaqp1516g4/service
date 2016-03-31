@@ -13,4 +13,6 @@ public interface Music4youMediaType {
     String MUSIC4YOU_COMMENT_COLLECTION = "application/vnd.dsa.music4you.comment.collection+json";
     String MUSIC4YOU_EVENT = "application/vnd.dsa.music4you.event+json";
     String MUSIC4YOU_EVENT_COLLECTION = "application/vnd.dsa.music4you.event.collection+json";
+    String MUSIC4YOU_Anuncio = "application/vnd.dsa.music4you.anuncio+json";
+    String MUSIC4YOU_Anuncio_Collection = "application/vnd.dsa.music4you.anuncio.collection+json";
 }

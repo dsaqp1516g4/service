@@ -3,6 +3,7 @@ package edu.upc.eetac.dsa.music4you.dao;
 import edu.upc.eetac.dsa.music4you.entity.Anuncio;
 import edu.upc.eetac.dsa.music4you.entity.AnuncioCollection;
 
+import java.io.InputStream;
 import java.sql.SQLException;
 
 /**
@@ -10,10 +11,10 @@ import java.sql.SQLException;
  */
 public interface AnuncioDAO {
 
-    public Anuncio createSting(String userid, String subject, String description, String image, long precio, int type) throws SQLException;
-    public Anuncio getStingById(String id) throws SQLException;
-    public AnuncioCollection getStings() throws SQLException;
-    public Anuncio updateSting(String id, String subject, String content) throws SQLException;
-    public boolean deleteSting(String id) throws SQLException;
+    public Anuncio createAnuncio(String userid, String subject, String description, long precio, int type) throws SQLException;
+    public Anuncio getAnuncioById(String id) throws SQLException;
+    public AnuncioCollection getAnuncios() throws SQLException;
+    public Anuncio updateAnuncio(String id, String subject, String description) throws SQLException;
+    public boolean deleteAnuncio(String id) throws SQLException;
 
 }
