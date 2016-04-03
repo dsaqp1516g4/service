@@ -15,4 +15,6 @@ public interface Music4youMediaType {
     String MUSIC4YOU_EVENT_COLLECTION = "application/vnd.dsa.music4you.event.collection+json";
     String MUSIC4YOU_Anuncio = "application/vnd.dsa.music4you.anuncio+json";
     String MUSIC4YOU_Anuncio_Collection = "application/vnd.dsa.music4you.anuncio.collection+json";
+    public final static String MUSIC4YOU_MESSAGE_COLLECTION = "application/vnd.dsa.apartmentshare.message.collection+json";
+    public final static String MUSIC4YOU_MESSAGE = "application/vnd.dsa.apartmentshare.message+json";
 }
