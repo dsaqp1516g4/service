@@ -1,0 +1,4 @@
+*.directory
+target/
+.idea
+
