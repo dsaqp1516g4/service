@@ -20,6 +20,8 @@ import java.sql.SQLException;
 public class UserResource {
 
 
+    /* OK */
+
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN)
@@ -43,6 +45,8 @@ public class UserResource {
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN).entity(authenticationToken).build();
     }
 
+    /* OK */
+
     @Path("/{id}")
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_USER)
@@ -57,6 +61,8 @@ public class UserResource {
             throw new NotFoundException("User with id = "+id+" doesn't exist");
         return user;
     }
+
+    /* OK */
 
     @Context
     private SecurityContext securityContext;
@@ -84,6 +90,8 @@ public class UserResource {
         }
         return user;
     }
+
+    /* OK */
 
     @Path("/{id}")
     @DELETE
