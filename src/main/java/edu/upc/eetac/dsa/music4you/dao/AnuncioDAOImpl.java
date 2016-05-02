@@ -42,9 +42,9 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             stmt.setString(2, userid);
             stmt.setString(3, subject);
             stmt.setString(4, description);
-            stmt.setString(5, "image");
-            stmt.setLong(6, precio);
-            stmt.setInt(7, type);
+            //stmt.setString(5, "image");
+            stmt.setLong(5, precio);
+            stmt.setInt(6, type);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -78,7 +78,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
     }
     @Override
     public Anuncio getAnuncioById(String id) throws SQLException {
-        Anuncio sting = null;
+        Anuncio anuncio = null;
 
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -90,14 +90,16 @@ public class AnuncioDAOImpl implements AnuncioDAO {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                sting = new Anuncio();
-                sting.setId(rs.getString("id"));
-                sting.setUserid(rs.getString("userid"));
-                sting.setCreator(rs.getString("fullname"));
-                sting.setSubject(rs.getString("subject"));
-                sting.setDescription(rs.getString("description"));
-                sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
-                sting.setLastModified(rs.getTimestamp("last_modified").getTime());
+                anuncio = new Anuncio();
+                anuncio.setId(rs.getString("id"));
+                anuncio.setUserid(rs.getString("userid"));
+                anuncio.setCreator(rs.getString("fullname"));
+                anuncio.setSubject(rs.getString("subject"));
+                anuncio.setDescription(rs.getString("description"));
+                anuncio.setPrecio(rs.getLong("precio"));
+                anuncio.setType(rs.getInt("type"));
+                anuncio.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
+                anuncio.setLastModified(rs.getTimestamp("last_modified").getTime());
             }
         } catch (SQLException e) {
             throw e;
@@ -105,7 +107,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             if (stmt != null) stmt.close();
             if (connection != null) connection.close();
         }
-        return sting;
+        return anuncio;
     }
 
     @Override
@@ -125,6 +127,8 @@ public class AnuncioDAOImpl implements AnuncioDAO {
                 sting.setId(rs.getString("id"));
                 sting.setUserid(rs.getString("userid"));
                 sting.setSubject(rs.getString("subject"));
+                sting.setPrecio(rs.getLong("precio"));
+                sting.setType(rs.getInt("type"));
                 sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 sting.setLastModified(rs.getTimestamp("last_modified").getTime());
                 if (first) {
@@ -144,7 +148,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
     }
 
     @Override
-    public Anuncio updateAnuncio(String id, String subject, String description) throws SQLException {
+    public Anuncio updateAnuncio(String id, String subject, String description, long precio) throws SQLException {
 
         Anuncio sting = null;
 
@@ -156,7 +160,8 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             stmt = connection.prepareStatement(AnuncioDAOQuery.UPDATE_STING);
             stmt.setString(1, subject);
             stmt.setString(2, description);
-            stmt.setString(3, id);
+            stmt.setString(3, String.valueOf(precio));
+            stmt.setString(4, id);
 
             int rows = stmt.executeUpdate();
             if (rows == 1)
