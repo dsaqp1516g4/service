@@ -24,6 +24,10 @@
   {
     "path": "anuncio",
     "methods": ["GET"]
+  },
+  {
+    "path": "events",
+    "methods": ["GET"]
   }
 
 ]
