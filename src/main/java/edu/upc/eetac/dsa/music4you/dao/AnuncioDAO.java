@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public interface AnuncioDAO {
 
-    public Anuncio createAnuncio(String userid, String subject, String description, long precio, int type) throws SQLException;
+    Anuncio createAnuncio(String userid, String subject, String description, long precio, int type, InputStream image) throws SQLException;
     public Anuncio getAnuncioById(String id) throws SQLException;
     public AnuncioCollection getAnuncios() throws SQLException;
     Anuncio updateAnuncio(String id, String subject, String description, long precio) throws SQLException;

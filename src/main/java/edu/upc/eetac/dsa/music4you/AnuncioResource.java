@@ -27,18 +27,19 @@ public class AnuncioResource {
     *       falla la introducción de precios con decimales p.ej. 20.1 euros */
 
     @POST
-    //@Consumes(MediaType.MULTIPART_FORM_DATA)
-    //@Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
     public Response createAnuncio(@FormDataParam("subject") String subject, @FormDataParam("description") String description,
                                   @FormDataParam("precio") long precio, @FormDataParam("type") int type,
+                                  @FormDataParam("image") InputStream file, @FormDataParam("image") FormDataContentDisposition fileDetail,
                                   @Context UriInfo uriInfo) throws URISyntaxException {
-        if(subject==null || description == null || type == 0)
+        if(subject==null || description == null)
             throw new BadRequestException("all parameters are mandatory");
         AnuncioDAO stingDAO = new AnuncioDAOImpl();
         Anuncio sting = null;
         AuthToken authenticationToken = null;
         try {
-            sting = stingDAO.createAnuncio(securityContext.getUserPrincipal().getName(), subject, description, precio, type);
+            sting = stingDAO.createAnuncio(securityContext.getUserPrincipal().getName(), subject, description, precio, type, file);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
