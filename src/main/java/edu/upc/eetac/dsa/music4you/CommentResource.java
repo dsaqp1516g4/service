@@ -26,14 +26,16 @@ public class CommentResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(Music4youMediaType.MUSIC4YOU_COMMENT)
     public Response createComment(@FormParam("content") String content,
-                                  @FormParam("eventid") String eventid, @Context UriInfo uriInfo) throws URISyntaxException {
-        if (content == null || eventid == null)
+                                  @FormParam("eventid") String eventid,
+                                  @FormParam("anuncioid") String anuncioid,
+                                  @Context UriInfo uriInfo) throws URISyntaxException {
+        if (content == null || (eventid == null && anuncioid == null))
             throw new BadRequestException("all parameters are mandatory");
         CommentDAO commentDAO = new CommentDAOImpl();
         Comment comment = null;
         AuthToken authToken = null;
         try {
-            comment = commentDAO.createComment(securityContext.getUserPrincipal().getName(), eventid, content);
+            comment = commentDAO.createComment(securityContext.getUserPrincipal().getName(), anuncioid, eventid, content);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
@@ -41,17 +43,19 @@ public class CommentResource {
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_COMMENT).entity(comment).build();
     }
 
-    /***500***/
+    /***OK***/
 
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_COMMENT_COLLECTION)
     public CommentCollection getComments(@QueryParam("length") int length,
-                                         @PathParam("eventid") String eventid,
-                                         @QueryParam("before") long before, @QueryParam("after") long after) {
+                                         @QueryParam("eventid") String eventid,
+                                         @QueryParam("anuncioid") String anuncioid,
+                                         @QueryParam("before") long before,
+                                         @QueryParam("after") long after) {
         CommentCollection commentCollection = null;
         CommentDAO stingDAO = new CommentDAOImpl();
         try {
-            commentCollection = stingDAO.getComments(length, eventid, before, after);
+            commentCollection = stingDAO.getComments(length, eventid, anuncioid, before, after);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }

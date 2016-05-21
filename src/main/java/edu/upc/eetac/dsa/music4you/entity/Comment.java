@@ -19,6 +19,7 @@ public class Comment {
     private String id;
     private String userid;
     private String eventid;
+    private String anuncioid;
     private String content;
     private long lastModified;
     private long creationTimestamp;
@@ -78,6 +79,14 @@ public class Comment {
 
     public void setCreationTimestamp(long creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
+    }
+
+    public String getAnuncioid() {
+        return anuncioid;
+    }
+
+    public void setAnuncioid(String anuncioid) {
+        this.anuncioid = anuncioid;
     }
 }
 
