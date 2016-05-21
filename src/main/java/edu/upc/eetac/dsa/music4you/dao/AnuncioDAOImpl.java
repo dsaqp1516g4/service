@@ -22,10 +22,17 @@ import java.util.UUID;
  */
 public class AnuncioDAOImpl implements AnuncioDAO {
     @Override
+<<<<<<< HEAD
     public Anuncio createAnuncio(String userid, String subject, String description, long precio, int type) throws SQLException {
         Connection connection = null;
         PreparedStatement stmt = null;
        // UUID uuid = writeAndConvertImage(image);
+=======
+    public Anuncio createAnuncio(String userid, String subject, String description, long precio, int type, InputStream image) throws SQLException {
+        Connection connection = null;
+        PreparedStatement stmt = null;
+        UUID uuid = writeAndConvertImage(image);
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
         String id = null;
         try {
             connection = Database.getConnection();
@@ -37,14 +44,24 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             else
                 throw new SQLException();
 
+<<<<<<< HEAD
             stmt = connection.prepareStatement(AnuncioDAOQuery.CREATE_STING);
+=======
+            stmt = connection.prepareStatement(AnuncioDAOQuery.CREATE_AD);
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
             stmt.setString(1, id);
             stmt.setString(2, userid);
             stmt.setString(3, subject);
             stmt.setString(4, description);
+<<<<<<< HEAD
             stmt.setString(5, "image");
             stmt.setLong(6, precio);
             stmt.setInt(7, type);
+=======
+            stmt.setLong(5, precio);
+            stmt.setInt(6, type);
+            stmt.setString(7, uuid.toString());
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -63,22 +80,37 @@ public class AnuncioDAOImpl implements AnuncioDAO {
         try{
             image= ImageIO.read(file);
         }catch(IOException E){
+<<<<<<< HEAD
             throw new InternalServerErrorException(
                     "error");
+=======
+            throw new InternalServerErrorException("error");
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
         }
         UUID uuid = UUID.randomUUID();
         String filename = uuid.toString() +".png";
         try{
             PropertyResourceBundle prb = (PropertyResourceBundle) ResourceBundle.getBundle("music4you");
             ImageIO.write(image, "png", new File(prb.getString("uploadFolder") + filename));
+<<<<<<< HEAD
+=======
+            //System.out.println("File Written:"+funciona);
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
         }catch(IOException e){
             throw  new InternalServerErrorException("error");
         }
         return uuid;
     }
+<<<<<<< HEAD
     @Override
     public Anuncio getAnuncioById(String id) throws SQLException {
         Anuncio sting = null;
+=======
+
+    @Override
+    public Anuncio getAnuncioById(String id) throws SQLException {
+        Anuncio anuncio = null;
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
 
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -90,6 +122,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+<<<<<<< HEAD
                 sting = new Anuncio();
                 sting.setId(rs.getString("id"));
                 sting.setUserid(rs.getString("userid"));
@@ -98,6 +131,19 @@ public class AnuncioDAOImpl implements AnuncioDAO {
                 sting.setDescription(rs.getString("description"));
                 sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 sting.setLastModified(rs.getTimestamp("last_modified").getTime());
+=======
+                anuncio = new Anuncio();
+                anuncio.setId(rs.getString("id"));
+                anuncio.setUserid(rs.getString("userid"));
+                anuncio.setCreator(rs.getString("fullname"));
+                anuncio.setSubject(rs.getString("subject"));
+                anuncio.setDescription(rs.getString("description"));
+                anuncio.setPrecio(rs.getLong("precio"));
+                anuncio.setType(rs.getInt("type"));
+                anuncio.setImage(rs.getString("image"));
+                anuncio.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
+                anuncio.setLastModified(rs.getTimestamp("last_modified").getTime());
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
             }
         } catch (SQLException e) {
             throw e;
@@ -105,7 +151,11 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             if (stmt != null) stmt.close();
             if (connection != null) connection.close();
         }
+<<<<<<< HEAD
         return sting;
+=======
+        return anuncio;
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     }
 
     @Override
@@ -125,6 +175,12 @@ public class AnuncioDAOImpl implements AnuncioDAO {
                 sting.setId(rs.getString("id"));
                 sting.setUserid(rs.getString("userid"));
                 sting.setSubject(rs.getString("subject"));
+<<<<<<< HEAD
+=======
+                sting.setPrecio(rs.getLong("precio"));
+                sting.setType(rs.getInt("type"));
+                sting.setImage(rs.getString("image"));
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
                 sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 sting.setLastModified(rs.getTimestamp("last_modified").getTime());
                 if (first) {
@@ -144,7 +200,11 @@ public class AnuncioDAOImpl implements AnuncioDAO {
     }
 
     @Override
+<<<<<<< HEAD
     public Anuncio updateAnuncio(String id, String subject, String description) throws SQLException {
+=======
+    public Anuncio updateAnuncio(String id, String subject, String description, long precio) throws SQLException {
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
 
         Anuncio sting = null;
 
@@ -156,7 +216,12 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             stmt = connection.prepareStatement(AnuncioDAOQuery.UPDATE_STING);
             stmt.setString(1, subject);
             stmt.setString(2, description);
+<<<<<<< HEAD
             stmt.setString(3, id);
+=======
+            stmt.setString(3, String.valueOf(precio));
+            stmt.setString(4, id);
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
 
             int rows = stmt.executeUpdate();
             if (rows == 1)

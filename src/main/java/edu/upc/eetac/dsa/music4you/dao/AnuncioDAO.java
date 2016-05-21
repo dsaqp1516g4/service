@@ -11,10 +11,17 @@ import java.sql.SQLException;
  */
 public interface AnuncioDAO {
 
+<<<<<<< HEAD
     public Anuncio createAnuncio(String userid, String subject, String description, long precio, int type) throws SQLException;
     public Anuncio getAnuncioById(String id) throws SQLException;
     public AnuncioCollection getAnuncios() throws SQLException;
     public Anuncio updateAnuncio(String id, String subject, String description) throws SQLException;
+=======
+    Anuncio createAnuncio(String userid, String subject, String description, long precio, int type, InputStream image) throws SQLException;
+    public Anuncio getAnuncioById(String id) throws SQLException;
+    public AnuncioCollection getAnuncios() throws SQLException;
+    Anuncio updateAnuncio(String id, String subject, String description, long precio) throws SQLException;
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     public boolean deleteAnuncio(String id) throws SQLException;
 
 }

@@ -40,7 +40,11 @@ public class EventDAOImpl implements EventDAO{
             stmt.setLong(6,lon);
             stmt.setLong(7,startDate);
             stmt.setLong(8,endDate);
+<<<<<<< HEAD
             stmt.setInt(9,0);
+=======
+            //stmt.setInt(9,0);
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -105,7 +109,11 @@ public class EventDAOImpl implements EventDAO{
                 event.setText(rs.getString("text"));
                 event.setLat(rs.getLong("lat"));
                 event.setLon(rs.getLong("lon"));
+<<<<<<< HEAD
                 event.setRatio(rs.getInt("ratio"));
+=======
+                //event.setRatio(rs.getInt("ratio"));
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
                 //event.setStartDate(rs.getTimestamp("start_date").getTime());
                 //event.setEndDate(rs.getTimestamp("end_date").getTime());
                 event.setLastModified(rs.getTimestamp("last_modified").getTime());
@@ -199,7 +207,11 @@ public class EventDAOImpl implements EventDAO{
                 event.setText(rs.getString("text"));
                 event.setLat(rs.getLong("lat"));
                 event.setLon(rs.getLong("lon"));
+<<<<<<< HEAD
                 event.setRatio(rs.getInt("ratio"));
+=======
+                //event.setRatio(rs.getInt("ratio"));
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
                 oldestTimestamp = rs.getTimestamp("start_date").getTime();
                 if (first) {
                     first = false;

@@ -20,6 +20,11 @@ import java.sql.SQLException;
 public class UserResource {
 
 
+<<<<<<< HEAD
+=======
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN)
@@ -43,6 +48,11 @@ public class UserResource {
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN).entity(authenticationToken).build();
     }
 
+<<<<<<< HEAD
+=======
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @Path("/{id}")
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_USER)
@@ -58,6 +68,11 @@ public class UserResource {
         return user;
     }
 
+<<<<<<< HEAD
+=======
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @Context
     private SecurityContext securityContext;
     @Path("/{id}")
@@ -85,6 +100,11 @@ public class UserResource {
         return user;
     }
 
+<<<<<<< HEAD
+=======
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @Path("/{id}")
     @DELETE
     public void deleteUser(@PathParam("id") String id){

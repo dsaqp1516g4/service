@@ -21,6 +21,11 @@ public class LoginResource {
     @Context
     SecurityContext securityContext;
 
+<<<<<<< HEAD
+=======
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN)
@@ -47,6 +52,11 @@ public class LoginResource {
         return authToken;
     }
 
+<<<<<<< HEAD
+=======
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @DELETE
     public void logout(){
         String userid = securityContext.getUserPrincipal().getName();

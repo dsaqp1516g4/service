@@ -20,6 +20,17 @@
   {
     "path": "login",
     "methods": ["POST"]
+<<<<<<< HEAD
+=======
+  },
+  {
+    "path": "anuncio",
+    "methods": ["GET"]
+  },
+  {
+    "path": "events",
+    "methods": ["GET"]
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
   }
 
 ]
