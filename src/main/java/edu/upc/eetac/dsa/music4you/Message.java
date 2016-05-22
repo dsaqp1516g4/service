@@ -11,6 +11,7 @@ import edu.upc.eetac.dsa.music4you.entity.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.Console;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -27,25 +28,27 @@ public class Message {
     private SecurityContext securityContext;
 
     @POST
-    public Response createMsg(@FormParam("loginid") String loginid, @FormParam("text") String text, @Context UriInfo uriInfo) throws URISyntaxException {
+    public Response createMsg(@FormParam("loginid") String loginid, @FormParam("destinatario") String destinatario,@FormParam("text") String text, @Context UriInfo uriInfo) throws URISyntaxException {
         if(loginid==null || text == null)
             throw new BadRequestException("loginid and text are mandatory");
         UserDAO userDAO = new UserDAOImpl();
+        UserDAO destino = new UserDAOImpl();
         AuthToken authenticationToken = null;
         Connection connection = null;
         PreparedStatement stmt = null;
         String id = null;
         Connection conn = null;
         String userid = securityContext.getUserPrincipal().getName();
-        String destinatario = null;
         Date date= new Date();
         User user =null;
+        String dst = null;
 
         try {
             user = userDAO.getUserByLoginid(loginid);
             if (user==null)
                 throw new NotFoundException("LoginID "+loginid+" doesn't exist");
-            destinatario = userDAO.getUserByLoginid(loginid).getId();
+            dst = destino.getUserByLoginid(destinatario).getId();
+            System.out.print(dst);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
@@ -71,7 +74,7 @@ public class Message {
             stmt = conn.prepareStatement(UserDAOQuery.CREATE_MSG);
             stmt.setString(1, id);
             stmt.setString(2, userid);
-            stmt.setString(3, destinatario);
+            stmt.setString(3, dst);
             stmt.setString(4, text);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -87,7 +90,7 @@ public class Message {
         }
         Messages msg = new Messages();
         msg.setId(id);
-        msg.setUserid(userid);
+        msg.setUserid(loginid);
         msg.setDestinatario(destinatario);
         msg.setText(text);
         msg.setCreationTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(date.getTime())));
