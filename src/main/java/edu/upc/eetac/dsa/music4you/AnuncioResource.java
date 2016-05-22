@@ -22,23 +22,48 @@ import java.sql.SQLException;
 public class AnuncioResource {
     @Context
     private SecurityContext securityContext;
+<<<<<<< HEAD
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
     public Response createAnuncio(@FormDataParam("subject") String subject, @FormDataParam("description") String description, @FormDataParam("precio") Long precio, @FormDataParam("type") int type,@Context UriInfo uriInfo) throws URISyntaxException {
         if(subject==null || description == null || type == 0)
+=======
+
+    /* OK : falta imagen
+    *       falla la introducción de precios con decimales p.ej. 20.1 euros */
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
+    public Response createAnuncio(@FormDataParam("subject") String subject, @FormDataParam("description") String description,
+                                  @FormDataParam("precio") long precio, @FormDataParam("type") int type,
+                                  @FormDataParam("image") InputStream file, @FormDataParam("image") FormDataContentDisposition fileDetail,
+                                  @Context UriInfo uriInfo) throws URISyntaxException {
+        if(subject==null || description == null)
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
             throw new BadRequestException("all parameters are mandatory");
         AnuncioDAO stingDAO = new AnuncioDAOImpl();
         Anuncio sting = null;
         AuthToken authenticationToken = null;
         try {
+<<<<<<< HEAD
             sting = stingDAO.createAnuncio(securityContext.getUserPrincipal().getName(), subject, description,precio, type);
+=======
+            sting = stingDAO.createAnuncio(securityContext.getUserPrincipal().getName(), subject, description, precio, type, file);
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
         URI uri = new URI(uriInfo.getAbsolutePath().toString() + "/" + sting.getId());
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_Anuncio).entity(sting).build();
     }
+<<<<<<< HEAD
+=======
+
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_Anuncio_Collection)
     public AnuncioCollection getAnuncios(@QueryParam("timestamp") long timestamp, @DefaultValue("true") @QueryParam("before") boolean before) {
@@ -52,6 +77,12 @@ public class AnuncioResource {
         }
         return anuncioCollection;
     }
+<<<<<<< HEAD
+=======
+
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @Path("/{id}")
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
@@ -86,6 +117,12 @@ public class AnuncioResource {
             throw new InternalServerErrorException();
         }
     }
+<<<<<<< HEAD
+=======
+
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @Path("/{id}")
     @PUT
     @Consumes(Music4youMediaType.MUSIC4YOU_Anuncio)
@@ -102,7 +139,11 @@ public class AnuncioResource {
 
         AnuncioDAO stingDAO = new AnuncioDAOImpl();
         try {
+<<<<<<< HEAD
             sting = stingDAO.updateAnuncio(id, sting.getSubject(), sting.getDescription());
+=======
+            sting = stingDAO.updateAnuncio(id, sting.getSubject(), sting.getDescription(), sting.getPrecio());
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
             if(sting == null)
                 throw new NotFoundException("Anuncio with id = "+id+" doesn't exist");
         } catch (SQLException e) {
@@ -111,6 +152,11 @@ public class AnuncioResource {
         return sting;
     }
 
+<<<<<<< HEAD
+=======
+    /* OK */
+
+>>>>>>> 8bdc9d41746e1bff39f607e5562a94d572657ca7
     @Path("/{id}")
     @DELETE
     public void deleteSting(@PathParam("id") String id) {
