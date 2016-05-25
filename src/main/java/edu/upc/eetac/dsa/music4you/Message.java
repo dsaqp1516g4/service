@@ -28,7 +28,7 @@ public class Message {
     private SecurityContext securityContext;
 
     @POST
-    public Response createMsg(@FormParam("loginid") String loginid, @FormParam("destinatario") String destinatario,@FormParam("text") String text, @Context UriInfo uriInfo) throws URISyntaxException {
+    public Response createMsg(@FormParam("loginid") String loginid,@FormParam("destinatario") String destinatario, @FormParam("text") String text, @Context UriInfo uriInfo) throws URISyntaxException {
         if(loginid==null || text == null)
             throw new BadRequestException("loginid and text are mandatory");
         UserDAO userDAO = new UserDAOImpl();
@@ -47,7 +47,8 @@ public class Message {
             user = userDAO.getUserByLoginid(loginid);
             if (user==null)
                 throw new NotFoundException("LoginID "+loginid+" doesn't exist");
-            dst = destino.getUserByLoginid(destinatario).getId();
+
+            dst = destino.getUserById(destinatario).getLoginid();
             System.out.print(dst);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
@@ -74,9 +75,14 @@ public class Message {
             stmt = conn.prepareStatement(UserDAOQuery.CREATE_MSG);
             stmt.setString(1, id);
             stmt.setString(2, userid);
-            stmt.setString(3, dst);
+            stmt.setString(3, destinatario);
             stmt.setString(4, text);
+
+            System.out.print(stmt);
+
             stmt.executeUpdate();
+
+
         } catch (SQLException e) {
             throw new ServerErrorException(e.getMessage(),
                     Response.Status.INTERNAL_SERVER_ERROR);
@@ -88,6 +94,9 @@ public class Message {
             } catch (SQLException e) {
             }
         }
+
+        System.out.print(stmt);
+
         Messages msg = new Messages();
         msg.setId(id);
         msg.setUserid(loginid);
