@@ -40,8 +40,8 @@ public class EventResource {
         UserDAO us = new UserDAOImpl();
         String userid= securityContext.getUserPrincipal().getName();
 
-  try{
-      event = eventDAO.createEvent(userid, titol, text, lat, lon, startdate, enddate);
+        try{
+            event = eventDAO.createEvent(userid, titol, text, lat, lon, startdate, enddate);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
@@ -49,7 +49,7 @@ public class EventResource {
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_EVENT).entity(event).build();
     }
 
-    /*** OK: pero sólo 3 eventos ***/
+    /*** OK ***/
 
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_EVENT_COLLECTION)

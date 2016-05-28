@@ -14,7 +14,7 @@ import java.sql.*;
 public class PlaylistDAOImpl implements PlaylistDAO {
 
     @Override
-    public Playlist createPlay(String userid, String subject, String content, String youtubelink, String audio, String genre) throws SQLException {
+    public Playlist createPlay(String userid, String artist, String title, String youtubelink, String audio) throws SQLException {
         Connection connection = null;
         PreparedStatement stmt = null;
         String id = null;
@@ -31,11 +31,10 @@ public class PlaylistDAOImpl implements PlaylistDAO {
             stmt = connection.prepareStatement(PlaylistDAOQuery.CREATE_PLAY);
             stmt.setString(1, id);
             stmt.setString(2, userid);
-            stmt.setString(3, subject);
-            stmt.setString(4, content);
-            stmt.setString(5,youtubelink);
-            stmt.setString(6,audio);
-            stmt.setString(7,genre);
+            stmt.setString(3, artist);
+            stmt.setString(4, title);
+            stmt.setString(5, audio);
+            stmt.setString(6, youtubelink);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -66,9 +65,11 @@ public class PlaylistDAOImpl implements PlaylistDAO {
                 playlist = new Playlist();
                 playlist.setId(rs.getString("id"));
                 playlist.setUserid(rs.getString("userid"));
-                playlist.setGenre(rs.getString("fullname"));
-                playlist.setArtist(rs.getString("subject"));
-                playlist.setTitle(rs.getString("content"));
+                //playlist.setGenre(rs.getString("fullname"));
+                playlist.setArtist(rs.getString("artist"));
+                playlist.setTitle(rs.getString("title"));
+                playlist.setAudio(rs.getString("audio"));
+                playlist.setYoutubelink(rs.getString("youtubelink"));
                 playlist.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 playlist.setLastModified(rs.getTimestamp("last_modified").getTime());
             }
@@ -137,7 +138,8 @@ public class PlaylistDAOImpl implements PlaylistDAO {
                 Playlist playlist = new Playlist();
                 playlist.setId(rs.getString("id"));
                 playlist.setUserid(rs.getString("userid"));
-                playlist.setArtist(rs.getString("subject"));
+                playlist.setArtist(rs.getString("artist"));
+                playlist.setTitle(rs.getString("title"));
                 playlist.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 playlist.setLastModified(rs.getTimestamp("last_modified").getTime());
                 if (first) {
