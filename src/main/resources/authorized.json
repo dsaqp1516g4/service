@@ -20,6 +20,13 @@
   {
     "path": "login",
     "methods": ["POST"]
+  },
+  {
+    "path": "events",
+    "methods": ["GET"]
+  },
+  {
+    "path": "anuncio",
+    "methods": ["GET"]
   }
-
 ]

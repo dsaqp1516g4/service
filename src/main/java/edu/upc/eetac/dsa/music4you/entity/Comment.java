@@ -19,6 +19,7 @@ public class Comment {
     private String id;
     private String userid;
     private String creator;
+    private String anuncioid;
     private String eventid;
     private String content;
     private long lastModified;

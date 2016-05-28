@@ -5,13 +5,11 @@ import edu.upc.eetac.dsa.music4you.entity.AuthToken;
 import edu.upc.eetac.dsa.music4you.dao.PlaylistDAOImpl;
 import edu.upc.eetac.dsa.music4you.entity.Playlist;
 import edu.upc.eetac.dsa.music4you.entity.PlaylistCollection;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -19,15 +17,17 @@ import java.sql.SQLException;
 /**
  * Created by juan on 14/10/15.
  */
-@Path("posts")
+@Path("songs")
 public class PlaylistResource {
     @Context
     private SecurityContext securityContext;
 
     @POST
-    public Response createPost(@FormParam("artist") String artist, @FormParam("title") String title,
-                               @FormParam("youtubelink") String youtubelink, @FormParam("audio") String audio,
-                               @FormParam("genre") String genre,
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(Music4youMediaType.MUSIC4YOU_PLAYLIST)
+    public Response createPost(@FormDataParam("artist") String artist, @FormDataParam("title") String title,
+                               @FormDataParam("youtubelink") String youtubelink, @FormDataParam("audio") String audio,
+                               @FormDataParam("genre") String genre,
                                @Context UriInfo uriInfo) throws URISyntaxException {
         if(artist==null || title == null)
             throw new BadRequestException("all parameters are mandatory");
@@ -35,7 +35,7 @@ public class PlaylistResource {
         Playlist playlist = null;
         AuthToken authenticationToken = null;
         try {
-            playlist = playlistDAO.createPlay(securityContext.getUserPrincipal().getName(), artist, title, youtubelink, audio, genre);
+            playlist = playlistDAO.createPlay(securityContext.getUserPrincipal().getName(), artist, title, audio, youtubelink);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
