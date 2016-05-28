@@ -10,10 +10,10 @@ import edu.upc.eetac.dsa.music4you.entity.Comment;
 import edu.upc.eetac.dsa.music4you.entity.CommentCollection;
 
 import javax.ws.rs.*;
-        import javax.ws.rs.core.*;
-        import java.net.URI;
-        import java.net.URISyntaxException;
-        import java.sql.*;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.*;
 
 @Path("comments")
 public class CommentResource {

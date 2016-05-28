@@ -18,6 +18,7 @@ public class Comment {
     private List<Link> links;
     private String id;
     private String userid;
+    private String creator;
     private String eventid;
     private String anuncioid;
     private String content;
@@ -87,6 +88,14 @@ public class Comment {
 
     public void setAnuncioid(String anuncioid) {
         this.anuncioid = anuncioid;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }
 
