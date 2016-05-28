@@ -8,17 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hixam on 3/04/16.
+ * Created by hixam on 21/05/16.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
-public class MensajeriaCollection {
+public class MessagesCollection {
     @InjectLinks({})
-
     private List<Link> links;
-    //private long newestTimestamp;
     private long creationTimestamp;
-    private List<Mensajeria> messages = new ArrayList<>();
+    private List<Messages> messages = new ArrayList<>();
 
     public List<Link> getLinks() {
         return links;
@@ -36,11 +33,11 @@ public class MensajeriaCollection {
         this.creationTimestamp = creationTimestamp;
     }
 
-    public List<Mensajeria> getMessages() {
+    public List<Messages> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<Mensajeria> messages) {
+    public void setMessages(List<Messages> messages) {
         this.messages = messages;
     }
 }

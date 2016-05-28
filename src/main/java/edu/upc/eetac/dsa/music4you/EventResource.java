@@ -49,7 +49,7 @@ public class EventResource {
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_EVENT).entity(event).build();
     }
 
-    /*** OK ***/
+    /*** OK: pero sólo 3 eventos ***/
 
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_EVENT_COLLECTION)

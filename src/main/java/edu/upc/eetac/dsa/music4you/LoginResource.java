@@ -21,8 +21,6 @@ public class LoginResource {
     @Context
     SecurityContext securityContext;
 
-    /* OK */
-
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(Music4youMediaType.MUSIC4YOU_AUTH_TOKEN)
@@ -48,8 +46,6 @@ public class LoginResource {
         }
         return authToken;
     }
-
-    /* OK */
 
     @DELETE
     public void logout(){

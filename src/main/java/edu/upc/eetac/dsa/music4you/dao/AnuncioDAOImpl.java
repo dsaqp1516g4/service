@@ -22,10 +22,10 @@ import java.util.UUID;
  */
 public class AnuncioDAOImpl implements AnuncioDAO {
     @Override
-    public Anuncio createAnuncio(String userid, String subject, String description, long precio, int type, InputStream image) throws SQLException {
+    public Anuncio createAnuncio(String userid, String subject, String description, long precio, int type) throws SQLException {
         Connection connection = null;
         PreparedStatement stmt = null;
-        UUID uuid = writeAndConvertImage(image);
+       // UUID uuid = writeAndConvertImage(image);
         String id = null;
         try {
             connection = Database.getConnection();
@@ -37,14 +37,14 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             else
                 throw new SQLException();
 
-            stmt = connection.prepareStatement(AnuncioDAOQuery.CREATE_AD);
+            stmt = connection.prepareStatement(AnuncioDAOQuery.CREATE_STING);
             stmt.setString(1, id);
             stmt.setString(2, userid);
             stmt.setString(3, subject);
             stmt.setString(4, description);
-            stmt.setLong(5, precio);
-            stmt.setInt(6, type);
-            stmt.setString(7, uuid.toString());
+            stmt.setString(5, "image");
+            stmt.setLong(6, precio);
+            stmt.setInt(7, type);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -63,23 +63,22 @@ public class AnuncioDAOImpl implements AnuncioDAO {
         try{
             image= ImageIO.read(file);
         }catch(IOException E){
-            throw new InternalServerErrorException("error");
+            throw new InternalServerErrorException(
+                    "error");
         }
         UUID uuid = UUID.randomUUID();
         String filename = uuid.toString() +".png";
         try{
             PropertyResourceBundle prb = (PropertyResourceBundle) ResourceBundle.getBundle("music4you");
             ImageIO.write(image, "png", new File(prb.getString("uploadFolder") + filename));
-            //System.out.println("File Written:"+funciona);
         }catch(IOException e){
             throw  new InternalServerErrorException("error");
         }
         return uuid;
     }
-
     @Override
     public Anuncio getAnuncioById(String id) throws SQLException {
-        Anuncio anuncio = null;
+        Anuncio sting = null;
 
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -91,17 +90,14 @@ public class AnuncioDAOImpl implements AnuncioDAO {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                anuncio = new Anuncio();
-                anuncio.setId(rs.getString("id"));
-                anuncio.setUserid(rs.getString("userid"));
-                anuncio.setCreator(rs.getString("fullname"));
-                anuncio.setSubject(rs.getString("subject"));
-                anuncio.setDescription(rs.getString("description"));
-                anuncio.setPrecio(rs.getLong("precio"));
-                anuncio.setType(rs.getInt("type"));
-                anuncio.setImage(rs.getString("image"));
-                anuncio.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
-                anuncio.setLastModified(rs.getTimestamp("last_modified").getTime());
+                sting = new Anuncio();
+                sting.setId(rs.getString("id"));
+                sting.setUserid(rs.getString("userid"));
+                sting.setCreator(rs.getString("fullname"));
+                sting.setSubject(rs.getString("subject"));
+                sting.setDescription(rs.getString("description"));
+                sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
+                sting.setLastModified(rs.getTimestamp("last_modified").getTime());
             }
         } catch (SQLException e) {
             throw e;
@@ -109,7 +105,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             if (stmt != null) stmt.close();
             if (connection != null) connection.close();
         }
-        return anuncio;
+        return sting;
     }
 
     @Override
@@ -129,9 +125,6 @@ public class AnuncioDAOImpl implements AnuncioDAO {
                 sting.setId(rs.getString("id"));
                 sting.setUserid(rs.getString("userid"));
                 sting.setSubject(rs.getString("subject"));
-                sting.setPrecio(rs.getLong("precio"));
-                sting.setType(rs.getInt("type"));
-                sting.setImage(rs.getString("image"));
                 sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 sting.setLastModified(rs.getTimestamp("last_modified").getTime());
                 if (first) {
@@ -151,7 +144,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
     }
 
     @Override
-    public Anuncio updateAnuncio(String id, String subject, String description, long precio) throws SQLException {
+    public Anuncio updateAnuncio(String id, String subject, String description) throws SQLException {
 
         Anuncio sting = null;
 
@@ -163,8 +156,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
             stmt = connection.prepareStatement(AnuncioDAOQuery.UPDATE_STING);
             stmt.setString(1, subject);
             stmt.setString(2, description);
-            stmt.setString(3, String.valueOf(precio));
-            stmt.setString(4, id);
+            stmt.setString(3, id);
 
             int rows = stmt.executeUpdate();
             if (rows == 1)

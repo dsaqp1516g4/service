@@ -5,15 +5,13 @@ import edu.upc.eetac.dsa.music4you.dao.UserDAO;
 import edu.upc.eetac.dsa.music4you.dao.UserDAOImpl;
 import edu.upc.eetac.dsa.music4you.dao.UserDAOQuery;
 import edu.upc.eetac.dsa.music4you.entity.AuthToken;
-import edu.upc.eetac.dsa.music4you.entity.Mensajeria;
-import edu.upc.eetac.dsa.music4you.entity.MensajeriaCollection;
+import edu.upc.eetac.dsa.music4you.entity.Messages;
+import edu.upc.eetac.dsa.music4you.entity.MessagesCollection;
 import edu.upc.eetac.dsa.music4you.entity.User;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
+import java.io.Console;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -21,33 +19,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by hixam on 3/04/16.
+ * Created by hixam on 21/05/16.
  */
-@Path("Mensaje")
-public class MensajeriaResource {
+
+@Path("message")
+public class Message {
     @Context
     private SecurityContext securityContext;
 
     @POST
-    public Response createMsg(@FormParam("loginid") String loginid, @FormParam("body") String body, @Context UriInfo uriInfo) throws URISyntaxException {
-        if(loginid==null || body == null)
-            throw new BadRequestException("loginid and body are mandatory");
+    public Response createMsg(@FormParam("loginid") String loginid,@FormParam("destinatario") String destinatario, @FormParam("text") String text, @Context UriInfo uriInfo) throws URISyntaxException {
+        if(loginid==null || text == null)
+            throw new BadRequestException("loginid and text are mandatory");
         UserDAO userDAO = new UserDAOImpl();
+        UserDAO destino = new UserDAOImpl();
         AuthToken authenticationToken = null;
         Connection connection = null;
         PreparedStatement stmt = null;
         String id = null;
         Connection conn = null;
         String userid = securityContext.getUserPrincipal().getName();
-        String destinatario = null;
         Date date= new Date();
         User user =null;
+        String dst = null;
 
         try {
             user = userDAO.getUserByLoginid(loginid);
             if (user==null)
                 throw new NotFoundException("LoginID "+loginid+" doesn't exist");
-            destinatario = userDAO.getUserByLoginid(loginid).getId();
+
+            dst = destino.getUserById(destinatario).getLoginid();
+            System.out.print(dst);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
@@ -74,8 +76,13 @@ public class MensajeriaResource {
             stmt.setString(1, id);
             stmt.setString(2, userid);
             stmt.setString(3, destinatario);
-            stmt.setString(4, body);
+            stmt.setString(4, text);
+
+            System.out.print(stmt);
+
             stmt.executeUpdate();
+
+
         } catch (SQLException e) {
             throw new ServerErrorException(e.getMessage(),
                     Response.Status.INTERNAL_SERVER_ERROR);
@@ -87,21 +94,23 @@ public class MensajeriaResource {
             } catch (SQLException e) {
             }
         }
-        Mensajeria msg = new Mensajeria();
+
+        System.out.print(stmt);
+
+        Messages msg = new Messages();
         msg.setId(id);
-        msg.setUserid(userid);
+        msg.setUserid(loginid);
         msg.setDestinatario(destinatario);
-        msg.setBody(body);
+        msg.setText(text);
         msg.setCreationTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(date.getTime())));
 
         URI uri = new URI(uriInfo.getAbsolutePath().toString() + "/" + msg.getId());
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_MESSAGE).entity(msg).build();
     }
-
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_MESSAGE_COLLECTION)
-    public MensajeriaCollection getMessages(@QueryParam("timestamp") long timestamp, @DefaultValue("true") @QueryParam("before") boolean before) {
-        MensajeriaCollection allmsg = new MensajeriaCollection();
+    public MessagesCollection getMessages(@QueryParam("timestamp") long timestamp, @DefaultValue("true") @QueryParam("before") boolean before) {
+        MessagesCollection allmsg = new MessagesCollection();
         String userid = securityContext.getUserPrincipal().getName();
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -114,10 +123,10 @@ public class MensajeriaResource {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Mensajeria msg = new Mensajeria();
+                Messages msg = new Messages();
                 msg.setUserid(rs.getString("userid"));
-                msg.setLoginid(rs.getString("loginid"));
-                msg.setnummsgs(rs.getInt("count"));
+                msg.setFromusername(rs.getString("fromusername"));
+                msg.setNummsgs(rs.getInt("count"));
                 msg.setCreationTimestamp(rs.getString("creation_timestamp"));
                 allmsg.getMessages().add(msg);
             }
@@ -134,4 +143,6 @@ public class MensajeriaResource {
         }
         return allmsg;
     }
+
+
 }

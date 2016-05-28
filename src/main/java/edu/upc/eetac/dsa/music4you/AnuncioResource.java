@@ -22,33 +22,23 @@ import java.sql.SQLException;
 public class AnuncioResource {
     @Context
     private SecurityContext securityContext;
-
-    /* OK : falta imagen
-    *       falla la introducción de precios con decimales p.ej. 20.1 euros */
-
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
-    public Response createAnuncio(@FormDataParam("subject") String subject, @FormDataParam("description") String description,
-                                  @FormDataParam("precio") long precio, @FormDataParam("type") int type,
-                                  @FormDataParam("image") InputStream file, @FormDataParam("image") FormDataContentDisposition fileDetail,
-                                  @Context UriInfo uriInfo) throws URISyntaxException {
-        if(subject==null || description == null)
+    public Response createAnuncio(@FormDataParam("subject") String subject, @FormDataParam("description") String description, @FormDataParam("precio") Long precio, @FormDataParam("type") int type,@Context UriInfo uriInfo) throws URISyntaxException {
+        if(subject==null || description == null || type == 0)
             throw new BadRequestException("all parameters are mandatory");
         AnuncioDAO stingDAO = new AnuncioDAOImpl();
         Anuncio sting = null;
         AuthToken authenticationToken = null;
         try {
-            sting = stingDAO.createAnuncio(securityContext.getUserPrincipal().getName(), subject, description, precio, type, file);
+            sting = stingDAO.createAnuncio(securityContext.getUserPrincipal().getName(), subject, description,precio, type);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
         URI uri = new URI(uriInfo.getAbsolutePath().toString() + "/" + sting.getId());
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_Anuncio).entity(sting).build();
     }
-
-    /* OK */
-
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_Anuncio_Collection)
     public AnuncioCollection getAnuncios(@QueryParam("timestamp") long timestamp, @DefaultValue("true") @QueryParam("before") boolean before) {
@@ -62,9 +52,6 @@ public class AnuncioResource {
         }
         return anuncioCollection;
     }
-
-    /* OK */
-
     @Path("/{id}")
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
@@ -99,9 +86,6 @@ public class AnuncioResource {
             throw new InternalServerErrorException();
         }
     }
-
-    /* OK */
-
     @Path("/{id}")
     @PUT
     @Consumes(Music4youMediaType.MUSIC4YOU_Anuncio)
@@ -118,7 +102,7 @@ public class AnuncioResource {
 
         AnuncioDAO stingDAO = new AnuncioDAOImpl();
         try {
-            sting = stingDAO.updateAnuncio(id, sting.getSubject(), sting.getDescription(), sting.getPrecio());
+            sting = stingDAO.updateAnuncio(id, sting.getSubject(), sting.getDescription());
             if(sting == null)
                 throw new NotFoundException("Anuncio with id = "+id+" doesn't exist");
         } catch (SQLException e) {
@@ -126,8 +110,6 @@ public class AnuncioResource {
         }
         return sting;
     }
-
-    /* OK */
 
     @Path("/{id}")
     @DELETE

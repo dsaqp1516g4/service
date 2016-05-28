@@ -10,7 +10,7 @@ import java.sql.*;
  */
 public class CommentDAOImpl implements CommentDAO {
     @Override
-    public Comment createComment(String userid, String anuncioid, String eventid, String content) throws SQLException {
+    public Comment createComment(String userid, String eventid, String content) throws SQLException {
         Connection connection = null;
         PreparedStatement stmt = null;
         String id = null;
@@ -28,8 +28,7 @@ public class CommentDAOImpl implements CommentDAO {
             stmt.setString(1, id);
             stmt.setString(2, userid);
             stmt.setString(3, eventid);
-            stmt.setString(4, anuncioid);
-            stmt.setString(5, content);
+            stmt.setString(4, content);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -62,7 +61,6 @@ public class CommentDAOImpl implements CommentDAO {
                 comment.setUserid(rs.getString("userid"));
                 comment.setCreator(rs.getString("fullname"));
                 comment.setEventid(rs.getString("eventid"));
-                comment.setAnuncioid(rs.getString("anuncioid"));
                 comment.setContent(rs.getString("content"));
                 comment.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 comment.setLastModified(rs.getTimestamp("last_modified").getTime());
@@ -77,44 +75,25 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public CommentCollection getComments(int length, String eventid, String anuncioid, long before, long after) throws SQLException {
+    public CommentCollection getComments(int length, String eventid, long before, long after) throws SQLException {
         CommentCollection commentCollection = new CommentCollection();
 
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = Database.getConnection();
-            if (anuncioid==null) {
-                if (before > 0) {
-                    stmt = connection.prepareStatement(CommentDAOQuery.GET_COMMENTS_EVENT_QUERY_FROM_LAST);
-                    stmt.setTimestamp(1, new Timestamp(before));
-                    stmt.setString(2, eventid);
-                } else {
-                    stmt = connection.prepareStatement(CommentDAOQuery.GET_COMMENTS_EVENT_QUERY);
-                    if (after > 0){
-                        stmt.setTimestamp(1, new Timestamp(after));
-                    }
-                    else{
-                        stmt.setTimestamp(1, null);
-                    }
-                    stmt.setString(2, eventid);
-                }
-            }
-            else{
-                if (before > 0) {
-                    stmt = connection.prepareStatement(CommentDAOQuery.GET_COMMENTS_QUERY_FROM_LAST);
-                    stmt.setTimestamp(1, new Timestamp(before));
-                    stmt.setString(2, anuncioid);
-                } else {
-                    stmt = connection.prepareStatement(CommentDAOQuery.GET_COMMENTS_QUERY);
 
-                    if (after > 0){
-                        stmt.setTimestamp(1, new Timestamp(after));}
-                    else{
-                        stmt.setTimestamp(1, null);}
-                    stmt.setString(2, anuncioid);
-                }
+            if (before > 0) {
+                stmt = connection.prepareStatement(CommentDAOQuery.GET_COMMENTS_QUERY_FROM_LAST);
+                stmt.setTimestamp(1, new Timestamp(before));
+            } else {
+                stmt = connection.prepareStatement(CommentDAOQuery.GET_COMMENTS_QUERY);
+                if (after > 0)
+                    stmt.setTimestamp(1, new Timestamp(after));
+                else
+                    stmt.setTimestamp(1, null);
             }
+
             ResultSet rs = stmt.executeQuery();
             boolean first = true;
             while (rs.next()) {
