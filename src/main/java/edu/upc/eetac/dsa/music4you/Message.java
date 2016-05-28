@@ -48,8 +48,10 @@ public class Message {
             if (user==null)
                 throw new NotFoundException("LoginID "+loginid+" doesn't exist");
 
-            dst = destino.getUserById(destinatario).getLoginid();
+            dst = destinatario;//destino.getUserById(destinatario).getLoginid();
             System.out.print(dst);
+            if (dst==null)
+                throw new NotFoundException("Destinatario "+destinatario+" doesn't exist");
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }

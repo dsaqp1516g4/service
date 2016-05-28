@@ -11,5 +11,6 @@ public interface AnuncioDAOQuery {
     public final static String UPDATE_STING = "update ads set subject=?, desccription=? where id=unhex(?) ";
     public final static String DELETE_STING = "delete from ads where id=unhex(?)";
 
+
 }
 

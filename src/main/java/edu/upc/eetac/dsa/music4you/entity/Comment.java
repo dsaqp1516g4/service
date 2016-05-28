@@ -18,6 +18,7 @@ public class Comment {
     private List<Link> links;
     private String id;
     private String userid;
+    private String anuncioid;
     private String creator;
     private String eventid;
     private String content;
