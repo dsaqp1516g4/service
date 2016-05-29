@@ -19,18 +19,19 @@ import java.sql.SQLException;
  */
 @Path("events")
 public class EventResource {
+
+    String defaultdate = "2017-09-11 10:00:00";
+
     @Context
     private SecurityContext securityContext;
-
-    /*** OK ***/
 
     @RolesAllowed("admin")
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(Music4youMediaType.MUSIC4YOU_EVENT)
     public Response createEvents(@FormParam("titol") String titol, @FormParam("text") String text,
-                                 @FormParam("latitud") long lat, @FormParam("longitud") long lon,
-                                 @FormParam("ratio") int ratio, @FormParam("startdate") long startdate,
+                                 @FormParam("latitud") double lat, @FormParam("longitud") double lon,
+                                 @FormParam("startdate") long startdate,
                                  @FormParam("enddate") long enddate,
                                  @Context UriInfo uriInfo) throws URISyntaxException {
         if (titol == null || text == null)
@@ -41,7 +42,7 @@ public class EventResource {
         String userid= securityContext.getUserPrincipal().getName();
 
         try{
-            event = eventDAO.createEvent(userid, titol, text, lat, lon, startdate, enddate);
+            event = eventDAO.createEvent(userid, titol, text, lat, lon, defaultdate, defaultdate);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }

@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * Created by juan on 02/03/16.
  */
 public interface EventDAO {
-    Event createEvent(String userid, String titol, String text, long lat, long lon, long startDate, long endDate) throws SQLException;
+    Event createEvent(String userid, String titol, String text, double lat, double lon, String startDate, String endDate) throws SQLException;
     Event getEventByRatio(int ratio) throws SQLException;
     Event getEvent(String eventid) throws SQLException;
     EventCollection getEventsNow(int userid) throws SQLException;

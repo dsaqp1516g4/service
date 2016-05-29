@@ -11,19 +11,19 @@ import java.sql.*;
  */
 public class EventDAOImpl implements EventDAO{
     @Override
-    public Event createEvent(String userid, String titol, String text, long lat, long lon, long startDate, long endDate) throws SQLException{
+    public Event createEvent(String userid, String titol, String text, double lat, double lon, String startDate, String endDate) throws SQLException{
         Connection connection = null;
         PreparedStatement stmt = null;
         String id = null;
         try {
             connection = Database.getConnection();
-            if (startDate==0)
+            /* if (startDate==0)
             {
                 throw new NotFoundException("Check dates!");
             }
             if(endDate==0){
                 throw new NotFoundException("Check dates!");
-            }
+            } */
             stmt = connection.prepareStatement(UserDAOQuery.UUID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next())
@@ -36,10 +36,10 @@ public class EventDAOImpl implements EventDAO{
             stmt.setString(2, userid);
             stmt.setString(3, titol);
             stmt.setString(4, text);
-            stmt.setLong(5,lat);
-            stmt.setLong(6,lon);
-            stmt.setLong(7,startDate);
-            stmt.setLong(8,endDate);
+            stmt.setDouble(5,lat);
+            stmt.setDouble(6,lon);
+            stmt.setString(7,startDate);
+            stmt.setString(8,endDate);
             //stmt.setInt(9,0);
             stmt.executeUpdate();
         } catch (SQLException e) {

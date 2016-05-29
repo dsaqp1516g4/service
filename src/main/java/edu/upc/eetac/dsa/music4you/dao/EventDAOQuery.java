@@ -5,7 +5,7 @@ package edu.upc.eetac.dsa.music4you.dao;
  */
 public class EventDAOQuery {
 
-    public final static String GET_EVENT_BY_ID_QUERY = "select hex(id) as id, hex(userid)as userid, titol, text, lat, lon, start_date, end_date, last_modified from events where id = unhex(?)";
+    public final static String GET_EVENT_BY_ID_QUERY = "select hex(id) as id, hex(userid) as userid, titol, text, lat, lon, start_date, end_date, last_modified from events where id = unhex(?)";
     public final static String GET_EVENTS_NOW_USER_QUERY = "select * from events where startdate < now() and now() < enddate and userid = unhex(?) order by startdate asc";
     public final static String UPDATE_EVENT_QUERY = "update events set titol = ifnull(?, titol), text = ifnull(?, text), start_date = ifnull(?, start_date), end_date = ifnull(?, end_date) where id = unhex(?)";
     public final static String DELETE_EVENT_QUERY = "delete from events where id = unhex(?)";
