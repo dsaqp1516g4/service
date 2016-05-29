@@ -29,8 +29,8 @@ public class Message {
 
     @POST
     public Response createMsg(@FormParam("loginid") String loginid,@FormParam("destinatario") String destinatario, @FormParam("text") String text, @Context UriInfo uriInfo) throws URISyntaxException {
-        if(loginid==null || text == null)
-            throw new BadRequestException("loginid and text are mandatory");
+        if(loginid==null || text == null || destinatario == null)
+            throw new BadRequestException("Debe rellenar todos los campos");
         UserDAO userDAO = new UserDAOImpl();
         UserDAO destino = new UserDAOImpl();
         AuthToken authenticationToken = null;
@@ -48,8 +48,10 @@ public class Message {
             if (user==null)
                 throw new NotFoundException("LoginID "+loginid+" doesn't exist");
 
-            dst = destino.getUserById(destinatario).getLoginid();
+            dst = destino.getUserByLoginid(destinatario).getLoginid();
             System.out.print(dst);
+            if (dst==null)
+                throw new NotFoundException("Destinatario "+destinatario+" doesn't exist");
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }
