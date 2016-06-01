@@ -4,9 +4,20 @@ import edu.upc.eetac.dsa.music4you.Music4youMediaType;
 import edu.upc.eetac.dsa.music4you.entity.Playlist;
 import edu.upc.eetac.dsa.music4you.entity.PlaylistCollection;
 
+import org.apache.commons.io.IOUtils;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.*;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+import java.util.UUID;
+
+import static edu.upc.eetac.dsa.music4you.Main.Linux;
 
 /**
  * Created by juan on 30/09/15.
@@ -14,10 +25,11 @@ import java.sql.*;
 public class PlaylistDAOImpl implements PlaylistDAO {
 
     @Override
-    public Playlist createPlay(String userid, String artist, String title, String youtubelink, String audio) throws SQLException {
+    public Playlist createPlay(String userid, String artist, String title, String youtubelink, InputStream audio) throws SQLException {
         Connection connection = null;
         PreparedStatement stmt = null;
         String id = null;
+        String filepath = uploadFile(audio);
         try {
             connection = Database.getConnection();
 
@@ -33,7 +45,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
             stmt.setString(2, userid);
             stmt.setString(3, artist);
             stmt.setString(4, title);
-            stmt.setString(5, audio);
+            stmt.setString(5, filepath);
             stmt.setString(6, youtubelink);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -46,6 +58,30 @@ public class PlaylistDAOImpl implements PlaylistDAO {
             }
         }
         return getPlayById(id);
+    }
+
+    private String uploadFile(InputStream audio) {
+        UUID uuid = UUID.randomUUID();
+        String filename = uuid.toString() + ".mp3";
+        PropertyResourceBundle prb = (PropertyResourceBundle) ResourceBundle.getBundle("music4you");
+
+        try {
+            OutputStream o;
+            if(Linux) {
+                o = new FileOutputStream(prb.getString("uploadFolder") + filename);
+                System.out.println(prb.getString("uploadFolder"));
+            }
+            else{
+                o = new FileOutputStream(prb.getString("uploadFolderWIN") + filename);
+            }
+            int bytes= IOUtils.copy(audio,o);
+            System.out.println("File Written with "+bytes+" bytes");
+            IOUtils.closeQuietly(o);
+        } catch (IOException e) {
+            throw new InternalServerErrorException("Something has been wrong when uploading the file");
+        }
+
+        return filename;
     }
 
     @Override
@@ -140,6 +176,8 @@ public class PlaylistDAOImpl implements PlaylistDAO {
                 playlist.setUserid(rs.getString("userid"));
                 playlist.setArtist(rs.getString("artist"));
                 playlist.setTitle(rs.getString("title"));
+                playlist.setAudio(rs.getString("audio"));
+                playlist.setYoutubelink(rs.getString("youtubelink"));
                 playlist.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 playlist.setLastModified(rs.getTimestamp("last_modified").getTime());
                 if (first) {

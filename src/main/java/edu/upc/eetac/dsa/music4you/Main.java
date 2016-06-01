@@ -14,6 +14,9 @@ import java.util.ResourceBundle;
  *
  */
 public class Main {
+    public static boolean Windows;
+    public static boolean Linux;
+
     // Base URI the Grizzly HTTP server will listen on
     private static String baseURI;
 
@@ -53,7 +56,15 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+        if (System.getProperty("os.name").contains("Windows")) {
+            Windows=true;
+        }
+        if(System.getProperty("os.name").contains("Linux")) {
+            Linux=true;
+        }
+
         final HttpServer server = startServer();
+        System.out.println("Ejecutando en sistema:" + "\n Linux: " + Linux + "\n Windows: " + Windows);
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", getBaseURI()));
         System.in.read();

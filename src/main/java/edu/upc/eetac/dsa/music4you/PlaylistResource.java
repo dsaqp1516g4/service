@@ -5,11 +5,13 @@ import edu.upc.eetac.dsa.music4you.entity.AuthToken;
 import edu.upc.eetac.dsa.music4you.dao.PlaylistDAOImpl;
 import edu.upc.eetac.dsa.music4you.entity.Playlist;
 import edu.upc.eetac.dsa.music4you.entity.PlaylistCollection;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -25,8 +27,9 @@ public class PlaylistResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(Music4youMediaType.MUSIC4YOU_PLAYLIST)
-    public Response createPost(@FormDataParam("artist") String artist, @FormDataParam("title") String title,
-                               @FormDataParam("youtubelink") String youtubelink, @FormDataParam("audio") String audio,
+    public Response createPlay(@FormDataParam("artist") String artist, @FormDataParam("title") String title,
+                               @FormDataParam("youtubelink") String youtubelink,
+                               @FormDataParam("audio") InputStream audio, @FormDataParam("audio") FormDataContentDisposition fileDetail,
                                @FormDataParam("genre") String genre,
                                @Context UriInfo uriInfo) throws URISyntaxException {
         if(artist==null || title == null)
@@ -35,7 +38,7 @@ public class PlaylistResource {
         Playlist playlist = null;
         AuthToken authenticationToken = null;
         try {
-            playlist = playlistDAO.createPlay(securityContext.getUserPrincipal().getName(), artist, title, audio, youtubelink);
+            playlist = playlistDAO.createPlay(securityContext.getUserPrincipal().getName(), artist, title, youtubelink, audio);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }

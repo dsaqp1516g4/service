@@ -29,7 +29,7 @@ public class AnuncioResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(Music4youMediaType.MUSIC4YOU_Anuncio)
     public Response createAnuncio(@FormDataParam("subject") String subject, @FormDataParam("description") String description,
-                                  @FormDataParam("precio") long precio, @FormDataParam("type") int type,
+                                  @FormDataParam("precio") double precio, @FormDataParam("type") int type,
                                   @FormDataParam("image") InputStream file, @FormDataParam("image") FormDataContentDisposition fileDetail,
                                   @Context UriInfo uriInfo) throws URISyntaxException {
         if(subject==null || description == null)
