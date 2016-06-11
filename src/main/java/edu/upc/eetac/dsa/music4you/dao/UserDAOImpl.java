@@ -80,6 +80,7 @@ public class UserDAOImpl implements UserDAO{
                 user.setLoginid(rs.getString("loginid"));
                 user.setEmail(rs.getString("email"));
                 user.setFullname(rs.getString("fullname"));
+                user.setRole(rs.getString("role"));
             }
         } catch (SQLException e) {
             // Relanza la excepción

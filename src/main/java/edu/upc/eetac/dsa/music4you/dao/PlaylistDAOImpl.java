@@ -64,7 +64,7 @@ public class PlaylistDAOImpl implements PlaylistDAO {
         UUID uuid = UUID.randomUUID();
         String filename = uuid.toString() + ".mp3";
         PropertyResourceBundle prb = (PropertyResourceBundle) ResourceBundle.getBundle("music4you");
-
+        int bytes;
         try {
             OutputStream o;
             if(Linux) {
@@ -74,14 +74,18 @@ public class PlaylistDAOImpl implements PlaylistDAO {
             else{
                 o = new FileOutputStream(prb.getString("uploadFolderWIN") + filename);
             }
-            int bytes= IOUtils.copy(audio,o);
+            bytes= IOUtils.copy(audio,o);
             System.out.println("File Written with "+bytes+" bytes");
             IOUtils.closeQuietly(o);
         } catch (IOException e) {
             throw new InternalServerErrorException("Something has been wrong when uploading the file");
         }
-
-        return filename;
+        if(bytes==9){
+            return null;
+        }
+        else {
+            return filename;
+        }
     }
 
     @Override

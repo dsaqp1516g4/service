@@ -54,6 +54,10 @@ public class Email {
         Connection conn = null;
         PreparedStatement stmt = null;
 
+        String user = null;
+        String contrasenya = null;
+
+
         try {
             ads = adsDAO.getAnuncioById(anuncioId);
             if (ads == null)
@@ -99,7 +103,7 @@ public class Email {
         generateMailMessage.setContent(emailBody, "text/html");
 
         Transport transport = getMailSession.getTransport("smtp");
-        transport.connect("smtp.gmail.com", "apartmentsharenoreply@gmail.com", "Dsa12345");
+        transport.connect("smtp.gmail.com", user, contrasenya);
         transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
         transport.close();
 
