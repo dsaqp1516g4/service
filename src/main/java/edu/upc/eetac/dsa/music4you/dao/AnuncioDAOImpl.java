@@ -114,7 +114,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
                 anuncio.setCreator(rs.getString("fullname"));
                 anuncio.setSubject(rs.getString("subject"));
                 anuncio.setDescription(rs.getString("description"));
-                anuncio.setPrecio(rs.getLong("precio"));
+                anuncio.setPrecio(rs.getDouble("precio"));
                 anuncio.setType(rs.getInt("type"));
                 anuncio.setImage(rs.getString("image"));
                 anuncio.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
@@ -146,7 +146,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
                 sting.setId(rs.getString("id"));
                 sting.setUserid(rs.getString("userid"));
                 sting.setSubject(rs.getString("subject"));
-                sting.setPrecio(rs.getLong("precio"));
+                sting.setPrecio(rs.getDouble("precio"));
                 sting.setType(rs.getInt("type"));
                 sting.setImage(rs.getString("image"));
                 sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
@@ -168,7 +168,7 @@ public class AnuncioDAOImpl implements AnuncioDAO {
     }
 
     @Override
-    public Anuncio updateAnuncio(String id, String subject, String description, long precio) throws SQLException {
+    public Anuncio updateAnuncio(String id, String subject, String description, double precio) throws SQLException {
 
         Anuncio sting = null;
 

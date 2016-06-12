@@ -20,7 +20,7 @@ public class Anuncio {
     private String subject;//titulo de anuncio
     private String description;
     private String image;
-    private long precio;
+    private double precio;
     private int type;
     private long creationTimestamp;
     private long lastModified;
@@ -81,11 +81,11 @@ public class Anuncio {
         this.image = image;
     }
 
-    public long getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(long precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 

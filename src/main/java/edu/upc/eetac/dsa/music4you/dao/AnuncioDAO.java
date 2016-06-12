@@ -14,7 +14,7 @@ public interface AnuncioDAO {
     Anuncio createAnuncio(String userid, String subject, String description, double precio, int type, InputStream image) throws SQLException;
     Anuncio getAnuncioById(String id) throws SQLException;
     AnuncioCollection getAnuncios() throws SQLException;
-    Anuncio updateAnuncio(String id, String subject, String description, long precio) throws SQLException;
+    Anuncio updateAnuncio(String id, String subject, String description, double precio) throws SQLException;
     boolean deleteAnuncio(String id) throws SQLException;
 
 }
