@@ -48,7 +48,7 @@ public class Message {
             if (user==null)
                 throw new NotFoundException("LoginID "+loginid+" doesn't exist");
 
-            dst = destino.getUserByLoginid(destinatario).getLoginid();
+            dst = destino.getUserByLoginid(destinatario).getId();
             System.out.print(dst);
             if (dst==null)
                 throw new NotFoundException("Destinatario "+destinatario+" doesn't exist");
@@ -77,7 +77,7 @@ public class Message {
             stmt = conn.prepareStatement(UserDAOQuery.CREATE_MSG);
             stmt.setString(1, id);
             stmt.setString(2, userid);
-            stmt.setString(3, destinatario);
+            stmt.setString(3, dst);
             stmt.setString(4, text);
 
             System.out.print(stmt);
@@ -102,7 +102,7 @@ public class Message {
         Messages msg = new Messages();
         msg.setId(id);
         msg.setUserid(loginid);
-        msg.setDestinatario(destinatario);
+        msg.setDestinatario(dst);
         msg.setText(text);
         msg.setCreationTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(date.getTime())));
 
@@ -129,6 +129,7 @@ public class Message {
                 msg.setUserid(rs.getString("userid"));
                 msg.setFromusername(rs.getString("fromusername"));
                 msg.setNummsgs(rs.getInt("count"));
+                msg.setText(rs.getString("text"));
                 msg.setCreationTimestamp(rs.getString("creation_timestamp"));
                 allmsg.getMessages().add(msg);
             }
