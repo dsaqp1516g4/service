@@ -23,7 +23,7 @@ public class AnuncioResource {
     @Context
     private SecurityContext securityContext;
 
-    /* OK : falla la introducción de precios con decimales p.ej. 20.1 euros */
+    /* OK */
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)

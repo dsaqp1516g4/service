@@ -3,6 +3,7 @@ package edu.upc.eetac.dsa.music4you.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.ws.rs.core.Link;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
 public class EventCollection {
 
     private List<Link> links;
-    private long firstTimestamp;
-    private long lastTimestamp;
+    private Date firstTimestamp;
+    private Date lastTimestamp;
     private List<Event> events = new ArrayList<>();
 
     public EventCollection() {
@@ -34,19 +35,19 @@ public class EventCollection {
         this.links = links;
     }
 
-    public long getFirstTimestamp() {
+    public Date getFirstTimestamp() {
         return firstTimestamp;
     }
 
-    public void setFirstTimestamp(long firstTimestamp) {
+    public void setFirstTimestamp(Date firstTimestamp) {
         this.firstTimestamp = firstTimestamp;
     }
 
-    public long getLastTimestamp() {
+    public Date getLastTimestamp() {
         return lastTimestamp;
     }
 
-    public void setLastTimestamp(long lastTimestamp) {
+    public void setLastTimestamp(Date lastTimestamp) {
         this.lastTimestamp = lastTimestamp;
     }
 

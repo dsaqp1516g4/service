@@ -20,8 +20,6 @@ import java.sql.SQLException;
 @Path("events")
 public class EventResource {
 
-    String defaultdate = "2017-09-11 10:00:00";
-
     @Context
     private SecurityContext securityContext;
 
@@ -31,8 +29,8 @@ public class EventResource {
     @Produces(Music4youMediaType.MUSIC4YOU_EVENT)
     public Response createEvents(@FormParam("titol") String titol, @FormParam("text") String text,
                                  @FormParam("latitud") double lat, @FormParam("longitud") double lon,
-                                 @FormParam("startdate") long startdate,
-                                 @FormParam("enddate") long enddate,
+                                 @FormParam("startdate") String startdate,
+                                 @FormParam("enddate") String enddate,
                                  @Context UriInfo uriInfo) throws URISyntaxException {
         if (titol == null || text == null)
             throw new BadRequestException("Title and text are mandatories");
@@ -42,7 +40,7 @@ public class EventResource {
         String userid= securityContext.getUserPrincipal().getName();
 
         try{
-            event = eventDAO.createEvent(userid, titol, text, lat, lon, defaultdate, defaultdate);
+            event = eventDAO.createEvent(userid, titol, text, lat, lon, startdate, enddate);
         } catch (SQLException e) {
             throw new InternalServerErrorException();
         }

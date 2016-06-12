@@ -17,13 +17,7 @@ public class EventDAOImpl implements EventDAO{
         String id = null;
         try {
             connection = Database.getConnection();
-            /* if (startDate==0)
-            {
-                throw new NotFoundException("Check dates!");
-            }
-            if(endDate==0){
-                throw new NotFoundException("Check dates!");
-            } */
+
             stmt = connection.prepareStatement(UserDAOQuery.UUID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next())
@@ -40,7 +34,6 @@ public class EventDAOImpl implements EventDAO{
             stmt.setDouble(6,lon);
             stmt.setString(7,startDate);
             stmt.setString(8,endDate);
-            //stmt.setInt(9,0);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -103,11 +96,10 @@ public class EventDAOImpl implements EventDAO{
                 event.setUserid(rs.getString("userid"));
                 event.setTitol(rs.getString("titol"));
                 event.setText(rs.getString("text"));
-                event.setLat(rs.getLong("lat"));
-                event.setLon(rs.getLong("lon"));
-                //event.setRatio(rs.getInt("ratio"));
-                //event.setStartDate(rs.getTimestamp("start_date").getTime());
-                //event.setEndDate(rs.getTimestamp("end_date").getTime());
+                event.setLat(rs.getDouble("lat"));
+                event.setLon(rs.getDouble("lon"));
+                event.setStartDate(rs.getDate("start_date"));
+                event.setEndDate(rs.getDate("end_date"));
                 event.setLastModified(rs.getTimestamp("last_modified").getTime());
 
             } else {
@@ -146,8 +138,8 @@ public class EventDAOImpl implements EventDAO{
                 event.setId(rs.getString("id"));
                 event.setUserid(rs.getString("userid"));
                 event.setTitol(rs.getString("titol"));
-                event.setStartDate(rs.getTimestamp("startdate").getTime());
-                event.setEndDate(rs.getTimestamp("enddate").getTime());
+                event.setStartDate(rs.getDate("start_date"));
+                event.setEndDate(rs.getDate("end_date"));
                 event.setLastModified(rs.getTimestamp("last_modified")
                         .getTime());
                 events.addEvent(event);
@@ -191,7 +183,7 @@ public class EventDAOImpl implements EventDAO{
             }
             ResultSet rs = stmt.executeQuery();
             boolean first = true;
-            long oldestTimestamp = 0;
+            Date oldestTimestamp = null;
             while (rs.next()) {
                 Event event = new Event();
                 event.setId(rs.getString("id"));
@@ -199,8 +191,9 @@ public class EventDAOImpl implements EventDAO{
                 event.setText(rs.getString("text"));
                 event.setLat(rs.getLong("lat"));
                 event.setLon(rs.getLong("lon"));
-                //event.setRatio(rs.getInt("ratio"));
-                oldestTimestamp = rs.getTimestamp("start_date").getTime();
+                event.setStartDate(rs.getDate("start_date"));
+                event.setEndDate(rs.getDate("end_date"));
+                oldestTimestamp = rs.getDate("start_date");
                 if (first) {
                     first = false;
                     eventCollection.setFirstTimestamp(event.getStartDate());
@@ -219,7 +212,7 @@ public class EventDAOImpl implements EventDAO{
     }
 
     @Override
-    public Event updateEvent(String id, String titol, String text, long startDate, long endDate) throws SQLException{
+    public Event updateEvent(String id, String titol, String text, Date startDate, Date endDate) throws SQLException{
         Event event = null;
 
         Connection connection = null;
@@ -230,8 +223,8 @@ public class EventDAOImpl implements EventDAO{
             stmt = connection.prepareStatement(EventDAOQuery.UPDATE_EVENT_QUERY);
             stmt.setString(1, titol);
             stmt.setString(2,text);
-            stmt.setLong(3, startDate);
-            stmt.setLong(4, endDate);
+            stmt.setDate(3, startDate);
+            stmt.setDate(4, endDate);
             stmt.setString(5, id);
 
             int rows = stmt.executeUpdate();
@@ -270,100 +263,4 @@ public class EventDAOImpl implements EventDAO{
         }
 
     }
-
- /*   @Override
-    public UserCollection getUsersofEventId(String id) throws SQLException {
-        UserCollection users = new UserCollection();
-        Connection connection = null;
-        PreparedStatement stmt = null;
-
-        try {
-            connection = Database.getConnection();
-            stmt = connection.prepareStatement(EventDAOQuery.GET_USERS_OF_EVENT);
-            stmt.setString(1, id);
-            UserDAO userDAO = new UserDAOImpl();
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-
-                User user = userDAO.getUserByLoginId(rs.getString("userid"));
-                user.setId(rs.getString("userid"));
-                users.addUser(user);
-            }
-        }
-        catch (SQLException e) {
-            throw e;
-        } finally {
-            if (stmt != null) stmt.close();
-            if (connection != null) connection.close();
-        }
-        return users;
-    }
-
-    @Override
-    public UserCollection getUsersState(String eventid, String state) throws SQLException {
-        Connection connection = null;
-        PreparedStatement stmt = null;
-        UserCollection users = new UserCollection();
-        try {
-            connection = Database.getConnection();
-
-            stmt = connection.prepareStatement(EventDAOQuery.GET_USERS_STATE_QUERY);
-            stmt.setInt(1, Integer.valueOf(eventid));
-            if (state.equals("join") || state.equals("pending")
-                    || state.equals("decline")) {
-                stmt.setString(2, state);
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    User user = new User();
-                    user.setId(rs.getString("userid"));
-                    user.setLoginid(rs.getString("username"));
-                    user.setFullname(rs.getString("name"));
-                    user.setEmail(rs.getString("email"));
-                    users.addUser(user);
-                }
-            } else
-                throw new NotFoundException("Incorrect URL");
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (stmt != null) stmt.close();
-            if (connection != null) connection.close();
-        }
-        return users;
-    }
-
-    @Override
-    public void updateState(String state, String eventid, int userid) throws SQLException {
-        Connection connection = null;
-        PreparedStatement stmt = null;
-        try {
-            connection = Database.getConnection();
-            stmt = connection.prepareStatement(EventDAOQuery.UPDATE_STATE_QUERY);
-            if (state.equals("join") || state.equals("pending")
-                    || state.equals("decline")) {
-                stmt.setString(1, state);
-                stmt.setInt(2, Integer.valueOf(userid));
-                stmt.setInt(3, Integer.valueOf(eventid));
-                int rows = stmt.executeUpdate();
-                if (rows != 1) {
-                    throw new NotFoundException(
-                            "There's no state with userid = " + userid
-                                    + " and eventid = " + eventid);
-                }
-            } else {
-                throw new NotFoundException("Wrong state");
-            }
-
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (stmt != null) stmt.close();
-            if (connection != null) connection.close();
-        }
-    }
-
-    @Override
-    public Event getEventById(String id) {
-        return null;
-    }*/
 }

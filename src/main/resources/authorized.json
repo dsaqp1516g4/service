@@ -28,5 +28,14 @@
   {
     "path": "anuncio",
     "methods": ["GET"]
+  },
+  { "path": "(?i)anuncio/?([0-9a-f]{32})?",
+    "methods": ["GET"]
+  },
+  { "path": "(?i)comments/?([0-9a-f]{32})?",
+    "methods": ["GET"]
+  },
+  { "path": "(?i)events/?([0-9a-f]{32})?",
+    "methods": ["GET"]
   }
 ]

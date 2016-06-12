@@ -3,6 +3,7 @@ package edu.upc.eetac.dsa.music4you.dao;
 import edu.upc.eetac.dsa.music4you.entity.Event;
 import edu.upc.eetac.dsa.music4you.entity.EventCollection;
 
+import java.sql.Date;
 import java.sql.SQLException;
 
 /**
@@ -15,7 +16,7 @@ public interface EventDAO {
     EventCollection getEventsNow(int userid) throws SQLException;
     EventCollection getEventsNowUser(EventCollection events, int userid) throws SQLException;
     EventCollection getEvents(int length, long before, long after) throws SQLException;
-    Event updateEvent(String id, String titol, String text, long startDate, long endDate) throws SQLException;
+    Event updateEvent(String id, String titol, String text, Date startDate, Date endDate) throws SQLException;
     boolean deleteEvent(String id) throws SQLException;
     //UserCollection getUsersofEventId(String id) throws SQLException;
 }

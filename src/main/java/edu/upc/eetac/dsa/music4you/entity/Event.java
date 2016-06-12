@@ -3,6 +3,7 @@ package edu.upc.eetac.dsa.music4you.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.ws.rs.core.Link;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -15,10 +16,10 @@ public class Event {
     private String userid;
     private String titol;
     private String text;
-    private long lat;
-    private long lon;
-    private long startDate;
-    private long endDate;
+    private double lat;
+    private double lon;
+    private Date startDate;
+    private Date endDate;
     private int ratio;
     private long lastModified;
 
@@ -54,35 +55,35 @@ public class Event {
         this.titol = titol;
     }
 
-    public long getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(long lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public long getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public long getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(long startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public long getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(long endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public void setLon(long lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
@@ -109,12 +110,4 @@ public class Event {
     public void setText(String text) {
         this.text = text;
     }
-
-    /* public String[] getAssistents() {
-        return assistents;
-    }
-
-    public void setAssistents(String[] assistents) {
-        this.assistents = assistents;
-    } */
 }
