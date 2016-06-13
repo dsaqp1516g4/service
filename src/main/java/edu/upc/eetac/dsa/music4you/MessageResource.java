@@ -1,17 +1,13 @@
 package edu.upc.eetac.dsa.music4you;
 
-import edu.upc.eetac.dsa.music4you.dao.Database;
-import edu.upc.eetac.dsa.music4you.dao.UserDAO;
-import edu.upc.eetac.dsa.music4you.dao.UserDAOImpl;
-import edu.upc.eetac.dsa.music4you.dao.UserDAOQuery;
+import edu.upc.eetac.dsa.music4you.dao.*;
 import edu.upc.eetac.dsa.music4you.entity.AuthToken;
-import edu.upc.eetac.dsa.music4you.entity.Messages;
-import edu.upc.eetac.dsa.music4you.entity.MessagesCollection;
+import edu.upc.eetac.dsa.music4you.entity.Message;
+import edu.upc.eetac.dsa.music4you.entity.MessageCollection;
 import edu.upc.eetac.dsa.music4you.entity.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.Console;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -23,7 +19,7 @@ import java.util.Date;
  */
 
 @Path("message")
-public class Message {
+public class MessageResource {
     @Context
     private SecurityContext securityContext;
 
@@ -74,7 +70,7 @@ public class Message {
 
         try {
 
-            stmt = conn.prepareStatement(UserDAOQuery.CREATE_MSG);
+            stmt = conn.prepareStatement(MessageDAOQuery.CREATE_MSG);
             stmt.setString(1, id);
             stmt.setString(2, userid);
             stmt.setString(3, dst);
@@ -99,20 +95,35 @@ public class Message {
 
         System.out.print(stmt);
 
-        Messages msg = new Messages();
+        Message msg = new Message();
         msg.setId(id);
         msg.setUserid(loginid);
         msg.setDestinatario(dst);
         msg.setText(text);
-        msg.setCreationTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Timestamp(date.getTime())));
+        msg.setCreationTimestamp(date.getTime());
 
         URI uri = new URI(uriInfo.getAbsolutePath().toString() + "/" + msg.getId());
         return Response.created(uri).type(Music4youMediaType.MUSIC4YOU_MESSAGE).entity(msg).build();
     }
+
     @GET
     @Produces(Music4youMediaType.MUSIC4YOU_MESSAGE_COLLECTION)
-    public MessagesCollection getMessages(@QueryParam("timestamp") long timestamp, @DefaultValue("true") @QueryParam("before") boolean before) {
-        MessagesCollection allmsg = new MessagesCollection();
+    public MessageCollection getMessages(@QueryParam("timestamp") long timestamp, @DefaultValue("true") @QueryParam("before") boolean before) {
+        MessageCollection messageCollection = null;
+        MessageDAO stingDAO = new MessageDAOImpl();
+        try {
+            if (before && timestamp == 0) timestamp = System.currentTimeMillis();
+            messageCollection = stingDAO.getMessages();
+        } catch (SQLException e) {
+            throw new InternalServerErrorException();
+        }
+        return messageCollection;
+    }
+
+    /* @GET
+    @Produces(Music4youMediaType.MUSIC4YOU_MESSAGE_COLLECTION)
+    public MessageCollection getMessages(@QueryParam("timestamp") long timestamp, @DefaultValue("true") @QueryParam("before") boolean before) {
+        MessageCollection allmsg = new MessageCollection();
         String userid = securityContext.getUserPrincipal().getName();
         Connection connection = null;
         PreparedStatement stmt = null;
@@ -125,7 +136,7 @@ public class Message {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Messages msg = new Messages();
+                Message msg = new Message();
                 msg.setUserid(rs.getString("userid"));
                 msg.setFromusername(rs.getString("fromusername"));
                 msg.setNummsgs(rs.getInt("count"));
@@ -145,7 +156,7 @@ public class Message {
             }
         }
         return allmsg;
-    }
+    } */
 
 
 }

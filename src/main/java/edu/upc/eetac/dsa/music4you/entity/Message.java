@@ -7,16 +7,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Messages {
+public class Message {
 
     private String id;
     private String text;
     private String userid;
     private String destinatario;
     private String fromusername;
-    private String tousername;
-    private String creationTimestamp;
-    private int nummsgs;
+    private long creationTimestamp;
+    private long lastModified;
 
     public String getId() {
         return id;
@@ -50,20 +49,20 @@ public class Messages {
         this.destinatario = destinatario;
     }
 
-    public String getCreationTimestamp() {
+    public long getCreationTimestamp() {
         return creationTimestamp;
     }
 
-    public void setCreationTimestamp(String creationTimestamp) {
+    public void setCreationTimestamp(long creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 
-    public int getNummsgs() {
-        return nummsgs;
+    public long getLastModified() {
+        return lastModified;
     }
 
-    public void setNummsgs(int nummsgs) {
-        this.nummsgs = nummsgs;
+    public void setLastModified(long lastModified) {
+        this.lastModified = lastModified;
     }
 
     public String getFromusername() {
@@ -72,13 +71,5 @@ public class Messages {
 
     public void setFromusername(String fromusername) {
         this.fromusername = fromusername;
-    }
-
-    public String getTousername() {
-        return tousername;
-    }
-
-    public void setTousername(String tousername) {
-        this.tousername = tousername;
     }
 }
